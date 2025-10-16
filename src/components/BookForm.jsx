@@ -183,6 +183,7 @@ useEffect(() => {
         </div>
 
 
+
         {libros.length > 0 ? (
         <CardsGrid>
         {libros.map((libro) => (
@@ -196,10 +197,11 @@ useEffect(() => {
         ))}
         </CardsGrid>
         ) : (
-            <p>No hay libros registrados aún.</p>
+          null  
         )}
+        
 
-        {message && (
+        {message && libros.length > 0 && (
             <div
                 className={`message-box ${
                 message.includes("exitos") ? "success" : "error"
@@ -207,19 +209,8 @@ useEffect(() => {
             >
                 {message}
             </div>
-        )}
-
-        {libroencontrado}
+        )} 
         
-        {libroencontrado && (
-        <div
-            className={`message-box ${
-            libroencontrado.includes("exitos") ? "success" : "error"
-            }`}
-        >
-            {libroencontrado}
-        </div>
-        )}
     </div>
   );
 };
