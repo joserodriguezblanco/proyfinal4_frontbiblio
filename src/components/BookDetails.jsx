@@ -2,37 +2,42 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { colors } from "../styles/variables";
+import {  CardMedia } from "@mui/material";
 
 const DetailsContainer = styled.div`
   padding: 40px;
-  background-color: ${colors.secondary};
+  background-color: ${colors.textSecondary};
   border-radius: 10px;
   margin: 40px auto;
-  max-width: 800px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-  color: ${colors.text};
-  border: 2px solid ${colors.primary};
+  max-width: 400px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  color: ${colors.primary};
+  border: 2px solid ${colors.border};
+  min-width: 250px;
 `;
 
 const DetailTitle = styled.h1`
-  color: ${colors.primary};
-  font-size: 3em;
+  color: ${colors.secondary};
+  font-size: 2em;
   margin-bottom: 10px;
   text-align: center;
-  text-shadow: 0 0 8px ${colors.primary};
+  text-shadow: 0 0 8px ${colors.secondary};
 `;
 
 const DetailItem = styled.p`
   font-size: 1.1em;
   margin-bottom: 10px;
   strong {
-    color: ${colors.textSecondary};
+    color: ${colors.accent};
     margin-right: 5px;
+  }
+    span {
+    color: ${colors.secondary};
   }
 `;
 const BackButton = styled.button`
-  background-color: ${colors.primary};
-  color: ${colors.tertiary};
+  background-color: ${colors.border};
+  color: ${colors.accent};
   border: none;
   padding: 10px 20px;
   font-size: 1em;
@@ -92,10 +97,10 @@ const DetailsPage = () => {
         const data = await response.json(); //se convierte la respuesta en json
         
         if (response.ok) {
-        
-          
           setMessage(data.message);
           setLibro(data.book);
+
+          setImagen(data.book.imagen);
 
           setTimeout(() => {
             setMessage("");
@@ -134,16 +139,60 @@ const DetailsPage = () => {
   return (
     <DetailsContainer>
       <DetailTitle>{libro.name || libro.title}</DetailTitle>
+
+{imagen && (
+        <CardMedia
+          component="img"
+          height="220"
+          image={imagen}
+          alt="Imagen de un libro"
+          sx={{ objectFit: "contain", marginTop: 2 }}
+        />
+      )}     
+     
       {Object.entries(libro).map(([key, value]) => {
-        if (typeof value === "string" && value.startsWith("http")) return null;
+        // if (typeof value === "string" && value.startsWith("http")) return null;        
         if (Array.isArray(value)) return null;
+
         return (
-          <DetailItem key={key}>
-            <strong>{key.replace(/_/g, " ")}</strong>
-            {value} {key}
+            <div>   
+          <DetailItem key={key}>            
+            <strong>
+              {key==='_id'
+                ? null
+                : key === "title"
+                ? "Título:"
+                : key === "author"
+                ? "Autor:"
+                : key === "isbn"
+                ? "ISBN:"                
+                : key === "editorial"
+                ? "Editorial:"
+                : key === "description"
+                ? "Sinapsis:"
+                : key}
+
+            </strong>
+            {key !== '_id' && key !== 'imagen' && <span>{value}</span>}                        
+                                    
           </DetailItem>
+              {/* {key === 'imagen' && value && 
+                (   
+                    <CardMedia                
+                        component='img'
+                        height='220'                
+                        image={value}
+                        alt="Imagen de un libro"
+                        sx={{ objectFit: 'contain' }}
+                    />
+                )
+                
+              } */}
+            </div>
         );
       })}
+
+       
       <BackButton onClick={() => navigate(-1)}>Volver</BackButton>
     </DetailsContainer>
   );

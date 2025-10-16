@@ -1,5 +1,19 @@
 import React, { useEffect, useState } from "react";
 import BookCard from "./BookCard";
+import styled from "styled-components";
+
+const CardsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+`;
 
 
 const BookForm = () => {
@@ -16,8 +30,7 @@ const BookForm = () => {
 
   const [libroencontrado, setlibroencontrado] = useState(null);
   const [libros, setLibros] = useState([]);
-
-  
+    
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,142 +90,136 @@ const BookForm = () => {
 
   
 useEffect(() => {
-    if (!isRegisterMode) 
-      handleSubmit(new Event("submit"));
+    if (!isRegisterMode) handleSubmit(new Event("submit"));
   }, [isRegisterMode]);
+  
 
   return (
-    <div className="container">
-      <div className="card">
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="text">Título:</label>
-            <input
-              type="text"
-              placeholder="Título del libro"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="form-input"
-            />
-          </div>
+    <div>
+        <div className="container">
+            <div className="card">
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="text">Título:</label>
+                        <input
+                        type="text"
+                        placeholder="Título del libro"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className="form-input"
+                        />
+                    </div>
 
-          <div className="form-group">
-            <label htmlFor="text">Autor:</label>
-            <input
-              type="text"
-              placeholder="Autor del libro"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-              className="form-input"
-            />
-          </div>
+                    <div className="form-group">
+                        <label htmlFor="text">Autor:</label>
+                        <input
+                        type="text"
+                        placeholder="Autor del libro"
+                        value={author}
+                        onChange={(e) => setAuthor(e.target.value)}
+                        className="form-input"
+                        />
+                    </div>
 
-          <div className="form-group">
-            <label htmlFor="text">ISBN:</label>
-            <input
-              type="text"
-              placeholder="ISBN del libro"
-              value={isbn}
-              onChange={(e) => setIsbn(e.target.value)}
-              className="form-input"
-            />
-          </div>
+                    <div className="form-group">
+                        <label htmlFor="text">ISBN:</label>
+                        <input
+                        type="text"
+                        placeholder="ISBN del libro"
+                        value={isbn}
+                        onChange={(e) => setIsbn(e.target.value)}
+                        className="form-input"
+                        />
+                    </div>
 
-          <div className="form-group">
-            <label htmlFor="text">Img URL:</label>
-            <input
-              type="text"
-              placeholder="Ruta de la imagen"
-              value={imagen}
-              onChange={(e) => setImagen(e.target.value)}
-              className="form-input"
-            />
-          </div>
+                    <div className="form-group">
+                        <label htmlFor="text">Img URL:</label>
+                        <input
+                        type="text"
+                        placeholder="Ruta de la imagen"
+                        value={imagen}
+                        onChange={(e) => setImagen(e.target.value)}
+                        className="form-input"
+                        />
+                    </div>
 
-          <div className="form-group">
-            <label htmlFor="text">Editorial:</label>
-            <input
-              type="text"
-              placeholder="Editorial del libro"
-              value={editorial}
-              onChange={(e) => setEditorial(e.target.value)}
-              className="form-input"
-            />
-          </div>
+                    <div className="form-group">
+                        <label htmlFor="text">Editorial:</label>
+                        <input
+                        type="text"
+                        placeholder="Editorial del libro"
+                        value={editorial}
+                        onChange={(e) => setEditorial(e.target.value)}
+                        className="form-input"
+                        />
+                    </div>
 
-          <div className="form-group">
-            <label htmlFor="text">Sinapsis:</label>
-            <input
-              type="text"
-              placeholder="Sinapsis del libro"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="form-input"
-            />
-          </div>
+                    <div className="form-group">
+                        <label htmlFor="text">Sinapsis:</label>
+                        <input
+                        type="text"
+                        placeholder="Sinapsis del libro"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        className="form-input"
+                        />
+                    </div>
 
-          {loading
-            ? "Cargando..."
-            : (
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="submit-button"
-                  onClick={() => setisRegisterMode(true)}
-                >
-                  Agregar Libro
-                </button>
-              )  
-                
-              }
+                    {loading
+                        ? "Cargando..."
+                        : (
+                            <button
+                            type="submit"
+                            disabled={loading}
+                            className="submit-button"
+                            onClick={() => setisRegisterMode(true)}
+                            >
+                            Agregar Libro
+                            </button>
+                        )
+                    }
+                </form>                
+            </div>
+        </div>
 
-              <button
-                  onClick={() => setisRegisterMode(false)}
-                  type="submit"
-                  disabled={loading}
-                  className="findall-button"
-                >
-                  Mostrar Todos los Libros
-                </button>
-        </form>
-
-        
 
         {libros.length > 0 ? (
-          libros.map((libro, index) => (
+        <CardsGrid>
+        {libros.map((libro) => (
             <BookCard
-              key={index}
-              title={libro.title}
-              author={libro.author}
-              imagen={libro.imagen}
-              isbn={libro.isbn}
+            key={libro._id || libro.isbn}
+            title={libro.title}
+            author={libro.author}
+            imagen={libro.imagen}
+            isbn={libro.isbn}
             />
-          ))
+        ))}
+        </CardsGrid>
         ) : (
-          <p>No hay libros registrados aún.</p>
+            <p>No hay libros registrados aún.</p>
         )}
 
         {message && (
-          <div
-            className={`message-box ${
-              message.includes("exitos") ? "success" : "error"
-            }`}
-          >
-            {message}
-          </div>
+            <div
+                className={`message-box ${
+                message.includes("exitos") ? "success" : "error"
+                }`}
+            >
+                {message}
+            </div>
         )}
 
         {libroencontrado}
+        
         {libroencontrado && (
-          <div
+        <div
             className={`message-box ${
-              libroencontrado.includes("exitos") ? "success" : "error"
+            libroencontrado.includes("exitos") ? "success" : "error"
             }`}
-          >
+        >
             {libroencontrado}
-          </div>
+        </div>
         )}
-      </div>
     </div>
   );
 };

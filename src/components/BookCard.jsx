@@ -7,12 +7,13 @@ import { Link } from 'react-router-dom';
 
 
 const CardContainer = styled(Link)`
+    margin: 15px auto;
+    text-align: center;    
     background-color: ${colors.textSecondary};
     border: 1px solid ${colors.border};
     border-radius: 8px;
-    padding: 20px;
-    margin: 15px;
-    width: 250px;
+    padding: 10px;    
+    width: 300px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.4);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     cursor: pointer;
@@ -20,8 +21,7 @@ const CardContainer = styled(Link)`
     color: ${colors.text};
     display: flex;
     flex-direction: column;
-    justify-content: space-between;    
-    
+    justify-content: space-between;        
 
     &:hover{
         transform: translateY(-5px);
@@ -32,7 +32,7 @@ const CardContainer = styled(Link)`
 export default function BookCard({ title, author, isbn,imagen, editorial, description}){
     
     return(
-        <CardContainer sx={{maxWidth:345, margin:'20px auto'}} to={`/${encodeURIComponent(btoa(isbn))}`   }>            
+        <CardContainer sx={{maxWidth:345}} to={`/${encodeURIComponent(btoa(isbn))}`   }>            
             <CardMedia                
                 component='img'
                 height='160'                
@@ -53,7 +53,8 @@ export default function BookCard({ title, author, isbn,imagen, editorial, descri
                 :null}
                 {description? 
                 <Typography variant="body2" color="text.secondary">Sinapsis: {description}</Typography>  
-                : null}
+                : null}                
+
             </CardContent>
 
         </CardContainer>
